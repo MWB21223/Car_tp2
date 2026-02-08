@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Détails de la Commande</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #09090a;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #0e0e0f;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #ecf0f1;
+            color: #090c0d;
+        }
+
+        .total-row {
+            font-weight: bold;
+        }
+
+        .no-print {
+            display: inline-block;
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+
+            a {
+                text-decoration: none;
+                color: black;
+            }
+
+            h2,
+            .add-form {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="no-print">
+        <h2>Bonjour <span th:text="${client.prenom} + ' ' + ${client.nom}">User</span></h2>
+        <a th:href="@{/home}">Toutes les commandes</a>
+        <button onclick="window.print()">Imprimer</button>
+    </div>
+
+    <h1 th:text="'Commande ' + ${commande.titre}">Commande Titre</h1>
+    <p th:text="'Client : ' + ${client.prenom} + ' ' + ${client.nom}">Client</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Libellé</th>
+                <th>Quantité</th>
+                <th>Prix unitaire</th>
+                <th>Prix total</th>
+                <th class="no-print">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="ligne : ${commande.lignes}">
+                <td th:text="${ligne.libelle}"></td>
+                <td th:text="${ligne.quantite}"></td>
+                <td th:text="${ligne.prixUnitaire}"></td>
+                <td th:text="${ligne.prixTotal}"></td>
+                <td class="no-print">
+                    <form th:action="@{/commande}" method="post" style="display:inline;">
+                        <input type="hidden" name="ligneId" th:value="${ligne.id}" />
+                        <button type="submit" style="color:red; cursor:pointer;">X</button>
+                    </form>
+                </td>
+            </tr>
+            <tr class="total-row">
+                <td colspan="3">Total commande</td>
+                <td th:text="${commande.total}"></td>
+                <td class="no-print"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="no-print add-form">
+        <h4>Ajout d'une ligne de commande</h4>
+        <form th:action="@{/commande}" method="post">
+            <div>
+                <label>Libellé : <input type="text" name="libelle" required /></label>
+            </div>
+            <div>
+                <label>Quantité : <input type="number" name="quantite" required /></label>
+            </div>
+            <div>
+                <label>Prix unitaire : <input type="number" step="0.01" name="prixUnitaire" required /></label>
+            </div>
+            <button type="submit">Ajouter ligne</button>
+        </form>
+    </div>
+
+    <div class="no-print" style="margin-top: 20px;">
+        <form th:action="@{/commande}" method="post">
+            <input type="hidden" name="action" value="submit" />
+            <button type="submit"
+                style="padding: 10px 20px; background-color: #040404; color: white; border: none; cursor: pointer;">Soumettre
+                la commande</button>
+        </form>
+    </div>
+</body>
+
+</html>

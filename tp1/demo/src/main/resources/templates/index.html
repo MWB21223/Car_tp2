@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+
+<body>
+    <h2>Bienvenue, <span th:text="${client.prenom} + ' ' + ${client.nom}">User</span>!</h2>
+    <p>Connecté avec succès.</p>
+    <a href="/store/login">Deconnexion</a>
+
+    <h3>Commandes</h3>
+    <ul>
+        <li th:each="commande : ${commandes}">
+            <form th:action="@{/commande}" method="post" style="display:inline;">
+                <input type="hidden" name="id" th:value="${commande.id}" />
+                <button type="submit"
+                    style="background:none; border:none; color:rgb(70, 70, 253); text-decoration:underline; cursor:pointer;"
+                    th:text="${commande.titre}">Commande Titre</button>
+            </form>
+        </li>
+    </ul>
+
+    <h3>Ajout d'une commande</h3>
+    <form th:action="@{/home}" method="post">
+        <div>
+            <label>Titre de la commande: <input type="text" name="titre" required /></label>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+
+</html>
