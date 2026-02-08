@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion de stock</title>
+</head>
+
+<body>
+
+    <div class="section">
+        <h2>Etat du stock</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Article</th>
+                    <th>Quantité</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${stock}">
+                    <td th:text="${item.key}"></td>
+                    <td th:text="${item.value}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <form th:action="@{/home}" method="get">
+            <button type="submit">Mettre à jour le stock</button>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>Réapprovisionnement du stock</h2>
+        <form th:action="@{/home/restock}" method="post">
+            <button type="submit">Réapprovisionner</button>
+        </form>
+    </div>
+
+</body>
+
+</html>
